@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propel Wealth – New Employee Onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B2A4A;
+    --teal:   #2E7D8C;
+    --teal-lt:#3A9BAD;
+    --cream:  #F7F5F0;
+    --white:  #FFFFFF;
+    --grey:   #8A8F9C;
+    --lgrey:  #EEF0F4;
+    --border: #D4D8E2;
+    --red:    #C0392B;
+    --green:  #1E7E5A;
+    --shadow: 0 4px 32px rgba(27,42,74,0.10);
+    --shadow-sm: 0 2px 8px rgba(27,42,74,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Background texture ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 20%, rgba(46,125,140,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 90% 80%, rgba(27,42,74,0.05) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    background: var(--navy);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  }
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+  .logo span { color: var(--teal-lt); }
+  .header-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* ── Layout ── */
+  .app-wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+    position: relative; z-index: 1;
+  }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    margin-bottom: 2.5rem;
+  }
+  .progress-steps {
+    display: flex; gap: 0; margin-bottom: 0.75rem;
+    border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .step-tab {
+    flex: 1; padding: 0.75rem 0.5rem;
+    background: var(--white);
+    border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey);
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    transition: all 0.25s;
+    border-right: 1px solid var(--lgrey);
+    position: relative;
+  }
+  .step-tab:last-child { border-right: none; }
+  .step-tab .step-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--lgrey);
+    color: var(--grey);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; font-weight: 700;
+    transition: all 0.25s;
+  }
+  .step-tab.active {
+    background: var(--navy); color: var(--white);
+  }
+  .step-tab.active .step-num {
+    background: var(--teal-lt); color: var(--white);
+  }
+  .step-tab.done {
+    background: var(--lgrey); color: var(--teal);
+  }
+  .step-tab.done .step-num {
+    background: var(--teal); color: var(--white);
+  }
+  .step-tab.done .step-num::after { content: '✓'; }
+  .step-tab.done .step-num span { display: none; }
+
+  .progress-bar-track {
+    height: 3px; background: var(--lgrey); border-radius: 2px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--teal), var(--teal-lt));
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── Section card ── */
+  .section-card {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-header {
+    background: var(--navy);
+    padding: 1.75rem 2rem 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .card-header::after {
+    content: '';
+    position: absolute; right: -20px; top: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.06);
+  }
+  .card-header::before {
+    content: '';
+    position: absolute; right: 30px; bottom: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    border: 2px solid rgba(46,125,140,0.15);
+  }
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal-lt);
+    margin-bottom: 0.35rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.65rem;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .section-desc {
+    font-size: 0.83rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 0.4rem;
+    font-weight: 300;
+  }
+
+  .card-body { padding: 2rem; }
+
+  /* ── Info banner ── */
+  .info-banner {
+    background: linear-gradient(135deg, rgba(46,125,140,0.08), rgba(46,125,140,0.03));
+    border: 1px solid rgba(46,125,140,0.2);
+    border-left: 4px solid var(--teal);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.75rem;
+    font-size: 0.82rem;
+    color: #2a5f6b;
+    line-height: 1.5;
+  }
+  .warn-banner {
+    background: rgba(192,57,43,0.05);
+    border: 1px solid rgba(192,57,43,0.2);
+    border-left: 4px solid var(--red);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.75rem;
+    font-size: 0.82rem;
+    color: #7b2318;
+  }
+
+  /* ── Form grid ── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-grid.cols-1 { grid-template-columns: 1fr; }
+  .span-2 { grid-column: span 2; }
+  .span-3 { grid-column: span 3; }
+  .span-full { grid-column: 1 / -1; }
+
+  /* ── Field ── */
+  .field { display: flex; flex-direction: column; gap: 0.35rem; }
+  .field label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: 0.02em;
+  }
+  .field label .req { color: var(--teal); margin-left: 2px; }
+  .field label .hint {
+    font-weight: 300; font-size: 0.72rem;
+    color: var(--grey); margin-left: 4px; letter-spacing: 0;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--navy);
+    background: var(--white);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    appearance: none;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(46,125,140,0.12);
+  }
+  .field input.error,
+  .field select.error,
+  .field textarea.error {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+  }
+  .field .err-msg {
+    font-size: 0.72rem; color: var(--red); display: none;
+  }
+  .field input.error ~ .err-msg,
+  .field select.error ~ .err-msg,
+  .field textarea.error ~ .err-msg { display: block; }
+
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8F9C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 2.2rem;
+  }
+  .field textarea { min-height: 90px; resize: vertical; }
+
+  /* ── TFN digit boxes ── */
+  .tfn-wrap {
+    display: flex; gap: 6px; align-items: center;
+  }
+  .tfn-wrap input {
+    width: 38px; text-align: center; padding: 0.65rem 0.4rem;
+    font-size: 1rem; font-weight: 600; letter-spacing: 0.05em;
+  }
+  .tfn-sep {
+    color: var(--grey); font-size: 1.1rem; font-weight: 300; flex-shrink: 0;
+    line-height: 1;
+  }
+
+  /* ── Radio / Checkbox groups ── */
+  .radio-group, .check-group {
+    display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.2rem;
+  }
+  .radio-group.horizontal, .check-group.horizontal {
+    flex-direction: row; flex-wrap: wrap; gap: 0.6rem;
+  }
+  .radio-opt, .check-opt {
+    display: flex; align-items: flex-start; gap: 0.55rem;
+    padding: 0.6rem 0.85rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-size: 0.85rem;
+    color: var(--navy);
+    flex: 1; min-width: 0;
+  }
+  .radio-opt input, .check-opt input {
+    width: 16px; min-width: 16px; height: 16px; margin-top: 2px;
+    accent-color: var(--teal); cursor: pointer;
+    border: none; box-shadow: none; padding: 0;
+  }
+  .radio-opt:has(input:checked),
+  .check-opt:has(input:checked) {
+    border-color: var(--teal);
+    background: rgba(46,125,140,0.06);
+  }
+  .radio-opt .opt-label { display: flex; flex-direction: column; gap: 1px; }
+  .radio-opt .opt-sub { font-size: 0.72rem; color: var(--grey); font-weight: 300; }
+
+  /* ── Section divider ── */
+  .form-section {
+    margin-top: 1.75rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--lgrey);
+  }
+  .form-section:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+  .form-section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    color: var(--teal);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .form-section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--lgrey);
+  }
+
+  /* ── Navigation buttons ── */
+  .nav-wrap {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 2rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--lgrey);
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer; border: none;
+    transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  .btn-primary {
+    background: var(--navy); color: var(--white);
+  }
+  .btn-primary:hover { background: #253d6b; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(27,42,74,0.25); }
+  .btn-secondary {
+    background: var(--lgrey); color: var(--navy);
+  }
+  .btn-secondary:hover { background: var(--border); }
+  .btn-success {
+    background: var(--green); color: var(--white);
+  }
+  .btn-success:hover { background: #175e43; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(30,126,90,0.3); }
+  .btn svg { width: 16px; height: 16px; }
+
+  /* ── Completion screen ── */
+  .completion {
+    text-align: center; padding: 3rem 2rem;
+  }
+  .completion-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, var(--teal), var(--teal-lt));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    box-shadow: 0 8px 32px rgba(46,125,140,0.3);
+    animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .completion h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem; color: var(--navy); margin-bottom: 0.75rem;
+  }
+  .completion p { color: var(--grey); max-width: 460px; margin: 0 auto 1.5rem; font-size: 0.88rem; line-height: 1.65; }
+  .summary-table {
+    background: var(--lgrey); border-radius: 10px;
+    padding: 1.25rem; text-align: left; margin: 1.5rem 0;
+    font-size: 0.82rem;
+  }
+  .summary-row { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .sk { color: var(--grey); }
+  .summary-row .sv { font-weight: 600; color: var(--navy); }
+  .btn-print { margin-top: 0.75rem; }
+  .print-note { font-size: 0.72rem; color: var(--grey); margin-top: 0.5rem; font-style: italic; }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid.cols-3 { grid-template-columns: 1fr; }
+    .span-2, .span-3 { grid-column: span 1; }
+    .step-tab { font-size: 0.6rem; }
+    .step-tab .step-num { width: 22px; height: 22px; font-size: 0.68rem; }
+    .radio-group.horizontal { flex-direction: column; }
+    .card-body { padding: 1.25rem; }
+  }
+
+  @media print {
+    .site-header, .progress-wrap, .nav-wrap { display: none !important; }
+    .section-card { box-shadow: none; border: 1px solid #ccc; }
+    body { background: white; }
+  }
+
+  /* ── Hidden utility ── */
+  .hidden { display: none !important; }
+  .field-note { font-size: 0.72rem; color: var(--grey); margin-top: 2px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">PROPEL <span>WEALTH</span></div>
+  <div class="header-badge">New Employee Onboarding</div>
+</header>
+
+<div class="app-wrap">
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-steps" id="stepTabs">
+      <button class="step-tab active" data-step="0" onclick="goToStep(0)">
+        <div class="step-num"><span>1</span></div>Personal
+      </button>
+      <button class="step-tab" data-step="1" onclick="goToStep(1)">
+        <div class="step-num"><span>2</span></div>Tax (TFN)
+      </button>
+      <button class="step-tab" data-step="2" onclick="goToStep(2)">
+        <div class="step-num"><span>3</span></div>Super
+      </button>
+      <button class="step-tab" data-step="3" onclick="goToStep(3)">
+        <div class="step-num"><span>4</span></div>Bank
+      </button>
+      <button class="step-tab" data-step="4" onclick="goToStep(4)">
+        <div class="step-num"><span>5</span></div>Emergency
+      </button>
+      <button class="step-tab" data-step="5" onclick="goToStep(5)">
+        <div class="step-num"><span>6</span></div>Declaration
+      </button>
+    </div>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ STEP 0: PERSONAL ══════════════════════ -->
+  <div class="section-card" id="step-0">
+    <div class="card-header">
+      <div class="section-label">Step 1 of 6</div>
+      <div class="section-title">Personal Details</div>
+      <div class="section-desc">Your name, contact information, and home address.</div>
+    </div>
+    <div class="card-body">
+      <div class="info-banner">
+        Please complete all fields marked with <strong style="color:var(--teal)">*</strong>. This information will be used to set up your employment record, payroll, and system access.
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Full Name</div>
+        <div class="form-grid cols-3">
+          <div class="field">
+            <label>Title</label>
+            <select id="title">
+              <option value="">Select…</option>
+              <option>Mr</option><option>Mrs</option><option>Miss</option><option>Ms</option><option>Dr</option><option>Mx</option>
+            </select>
+          </div>
+          <div class="field span-2">
+            <label>Legal First Name <span class="req">*</span></label>
+            <input type="text" id="firstName" placeholder="As it appears on your ID" required>
+            <span class="err-msg">Please enter your first name</span>
+          </div>
+          <div class="field">
+            <label>Middle Name(s) <span class="hint">optional</span></label>
+            <input type="text" id="middleName" placeholder="">
+          </div>
+          <div class="field span-2">
+            <label>Legal Last Name / Surname <span class="req">*</span></label>
+            <input type="text" id="lastName" placeholder="" required>
+            <span class="err-msg">Please enter your last name</span>
+          </div>
+          <div class="field span-3">
+            <label>Previous Surname <span class="hint">if different from current, for ATO records</span></label>
+            <input type="text" id="prevName" placeholder="">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Date of Birth & Contact</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Date of Birth <span class="req">*</span></label>
+            <input type="date" id="dob" required>
+            <span class="err-msg">Please enter your date of birth</span>
+          </div>
+          <div class="field">
+            <label>Gender <span class="hint">optional</span></label>
+            <select id="gender">
+              <option value="">Prefer not to say</option>
+              <option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer to self-describe</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Preferred Email Address <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="you@example.com" required>
+            <span class="err-msg">Please enter a valid email address</span>
+          </div>
+          <div class="field">
+            <label>Mobile / Phone Number <span class="req">*</span></label>
+            <input type="tel" id="phone" placeholder="04XX XXX XXX" required>
+            <span class="err-msg">Please enter your phone number</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Home Address (Australia)</div>
+        <div class="form-grid">
+          <div class="field span-2">
+            <label>Street Address <span class="req">*</span></label>
+            <input type="text" id="street" placeholder="Unit / Street number and name" required>
+            <span class="err-msg">Please enter your street address</span>
+          </div>
+          <div class="field">
+            <label>Suburb / Town <span class="req">*</span></label>
+            <input type="text" id="suburb" required>
+            <span class="err-msg">Required</span>
+          </div>
+          <div class="field">
+            <label>State / Territory <span class="req">*</span></label>
+            <select id="state" required>
+              <option value="">Select…</option>
+              <option>WA</option><option>NSW</option><option>VIC</option><option>QLD</option>
+              <option>SA</option><option>TAS</option><option>NT</option><option>ACT</option>
+            </select>
+            <span class="err-msg">Please select your state</span>
+          </div>
+          <div class="field">
+            <label>Postcode <span class="req">*</span></label>
+            <input type="text" id="postcode" placeholder="6000" maxlength="4" required>
+            <span class="err-msg">Required</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Employment Details</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Position / Job Title <span class="req">*</span></label>
+            <select id="position" required>
+              <option value="">Select your role…</option>
+              <option>Client Adviser</option>
+              <option>Client Relationship Manager</option>
+              <option>Client Administrator</option>
+              <option>Office Manager</option>
+              <option>Paraplanner</option>
+              <option>Other</option>
+            </select>
+            <span class="err-msg">Please select your position</span>
+          </div>
+          <div class="field">
+            <label>Start Date <span class="req">*</span></label>
+            <input type="date" id="startDate" required>
+            <span class="err-msg">Please enter your start date</span>
+          </div>
+          <div class="field">
+            <label>Employment Type <span class="req">*</span></label>
+            <select id="empType" required>
+              <option value="">Select…</option>
+              <option>Full-time</option>
+              <option>Part-time</option>
+              <option>Casual</option>
+            </select>
+            <span class="err-msg">Please select your employment type</span>
+          </div>
+          <div class="field">
+            <label>Work Location</label>
+            <select id="location">
+              <option>Stirling (Head Office)</option>
+              <option>Remote / WFH</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-wrap">
+        <div></div>
+        <button class="btn btn-primary" onclick="nextStep(0)">
+          Next: Tax Details
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ STEP 1: TFN ══════════════════════ -->
+  <div class="section-card hidden" id="step-1">
+    <div class="card-header">
+      <div class="section-label">Step 2 of 6</div>
+      <div class="section-title">Tax File Number Declaration</div>
+      <div class="section-desc">ATO NAT 3092 — required for PAYG tax withholding</div>
+    </div>
+    <div class="card-body">
+      <div class="info-banner">
+        <strong>Important:</strong> Providing your TFN is optional, but if you don't, tax will be withheld at the top marginal rate. Your TFN is protected under the Privacy Act 1988 and the Tax File Number Rule.
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Tax File Number</div>
+        <div class="field">
+          <label>Your Tax File Number (TFN)</label>
+          <div class="tfn-wrap">
+            <input type="text" class="tfn-box" id="tfn1" maxlength="3" placeholder="000" oninput="tfnTab(this,'tfn2',3)">
+            <span class="tfn-sep">–</span>
+            <input type="text" class="tfn-box" id="tfn2" maxlength="3" placeholder="000" oninput="tfnTab(this,'tfn3',3)">
+            <span class="tfn-sep">–</span>
+            <input type="text" class="tfn-box" id="tfn3" maxlength="3" placeholder="000">
+          </div>
+          <div class="field-note">Enter your 9-digit TFN. If you don't have one or have applied for one, select the option below.</div>
+        </div>
+        <div class="form-grid cols-1" style="margin-top:0.75rem">
+          <div class="field">
+            <label>TFN Status</label>
+            <div class="radio-group">
+              <label class="radio-opt">
+                <input type="radio" name="tfnStatus" value="provided" checked>
+                <div class="opt-label">
+                  <span>I have provided my TFN above</span>
+                </div>
+              </label>
+              <label class="radio-opt">
+                <input type="radio" name="tfnStatus" value="applied">
+                <div class="opt-label">
+                  <span>I have applied for a TFN or enquired about my existing TFN</span>
+                  <span class="opt-sub">You have 28 days to provide your TFN. Tax will be withheld at the standard rate in the meantime.</span>
+                </div>
+              </label>
+              <label class="radio-opt">
+                <input type="radio" name="tfnStatus" value="exempt-age">
+                <div class="opt-label">
+                  <span>Exempt — under 18 years of age and do not earn enough to pay tax</span>
+                </div>
+              </label>
+              <label class="radio-opt">
+                <input type="radio" name="tfnStatus" value="exempt-pension">
+                <div class="opt-label">
+                  <span>Exempt — in receipt of a pension, benefit, or allowance</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Employment Basis</div>
+        <div class="field">
+          <label>On what basis are you paid? <span class="req">*</span></label>
+          <div class="radio-group horizontal">
+            <label class="radio-opt">
+              <input type="radio" name="payBasis" value="full-time" required>
+              <div class="opt-label"><span>Full-time</span></div>
+            </label>
+            <label class="radio-opt">
+              <input type="radio" name="payBasis" value="part-time">
+              <div class="opt-label"><span>Part-time</span></div>
+            </label>
+            <label class="radio-opt">
+              <input type="radio" name="payBasis" value="casual">
+              <div class="opt-label"><span>Casual</span></div>
+            </label>
+            <label class="radio-opt">
+              <input type="radio" name="payBasis" value="labour-hire">
+              <div class="opt-label"><span>Labour hire</span></div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Residency Status</div>
+        <div class="field">
+          <label>For tax purposes, you are: <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-opt">
+              <input type="radio" name="residency" value="australian" checked>
+              <div class="opt-label"><span>An Australian resident for tax purposes</span></div>
+            </label>
+            <label class="radio-opt">
+              <input type="radio" name="residency" value="foreign">
+              <div class="opt-label">
+                <span>A foreign resident for tax purposes</span>
+                <span class="opt-sub">Do not claim the tax-free threshold below</span>
+              </div>
+            </label>
+            <label class="radio-opt">
+              <input type="radio" name="residency" value="working-holiday">
+              <div class="opt-label">
+                <span>A working holiday maker</span>
+                <span class="opt-sub">Do not claim the tax-free threshold below</span>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Tax-Free Threshold</div>
+        <div class="field">
+          <label>Do you want to claim the tax-free threshold from Propel Wealth? <span class="req">*</span></label>
+          <div class="radio-group horizontal">
+            <label class="radio-opt">
+              <input type="radio" name="tfThreshold" value="yes" required>
+              <div class="opt-label"><span>Yes — claim threshold</span></div>
+            </label>
+            <label class="radio-opt">
+              <input type="radio" name="tfThreshold" value="no">
+              <div class="opt-label"><span>No — do not claim</span></div>
+            </label>
+          </div>
+          <div class="field-note">Only claim the tax-free threshold from one payer at a time, unless your total income from all sources will be less than the threshold for the financial year.</div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Student Loans</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Do you have a HELP, SSL, or TSL debt?</label>
+            <div class="radio-group horizontal">
+              <label class="radio-opt">
+                <input type="radio" name="helpDebt" value="yes">
+                <div class="opt-label"><span>Yes</span></div>
+              </label>
+              <label class="radio-opt">
+                <input type="radio" name="helpDebt" value="no" checked>
+                <div class="opt-label"><span>No</span></div>
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Do you have a Financial Supplement debt?</label>
+            <div class="radio-group horizontal">
+              <label class="radio-opt">
+                <input type="radio" name="financialSupp" value="yes">
+                <div class="opt-label"><span>Yes</span></div>
+              </label>
+              <label class="radio-opt">
+                <input type="radio" name="financialSupp" value="no" checked>
+                <div class="opt-label"><span>No</span></div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="field-note" style="margin-top:0.5rem">If yes, your employer will withhold additional amounts to cover compulsory repayments that may be raised on your notice of assessment.</div>
+      </div>
+
+      <div class="nav-wrap">
+        <button class="btn btn-secondary" onclick="prevStep(1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="nextStep(1)">
+          Next: Superannuation
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ STEP 2: SUPER ══════════════════════ -->
+  <div class="section-card hidden" id="step-2">
+    <div class="card-header">
+      <div class="section-label">Step 3 of 6</div>
+      <div class="section-title">Superannuation Choice</div>
+      <div class="section-desc">ATO NAT 13080 — Standard Choice Form</div>
+    </div>
+    <div class="card-body">
+      <div class="info-banner">
+        Your superannuation fund choice is an important decision for your retirement savings. You can choose your existing fund, Propel Wealth's default fund, or a self-managed super fund (SMSF).
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Super Fund Selection</div>
+        <div class="field">
+          <label>I choose for my super to be paid into: <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-opt" onclick="showSuperSection('existing')">
+              <input type="radio" name="superChoice" value="existing" id="superExisting">
+              <div class="opt-label">
+                <span><strong>My existing super fund</strong></span>
+                <span class="opt-sub">I want my employer to pay into a super account I have already opened</span>
+              </div>
+            </label>
+            <label class="radio-opt" onclick="showSuperSection('default')">
+              <input type="radio" name="superChoice" value="default" id="superDefault">
+              <div class="opt-label">
+                <span><strong>My employer's default super fund</strong></span>
+                <span class="opt-sub">I want my employer to open a new account for me in their default fund</span>
+              </div>
+            </label>
+            <label class="radio-opt" onclick="showSuperSection('smsf')">
+              <input type="radio" name="superChoice" value="smsf" id="superSMSF">
+              <div class="opt-label">
+                <span><strong>My private self-managed super fund (SMSF)</strong></span>
+                <span class="opt-sub">I am a member and trustee responsible for managing the fund</span>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Existing fund details -->
+      <div id="superSection-existing" class="form-section hidden">
+        <div class="form-section-title">Existing Fund Details</div>
+        <div class="info-banner">You can find your super fund details by logging into your super fund member portal, contacting your fund directly, or through ATO online services via myGov.</div>
+        <div class="form-grid">
+          <div class="field span-2">
+            <label>Super Fund Name <span class="req">*</span></label>
+            <input type="text" id="existFundName" placeholder="e.g. Australian Super, REST, Hostplus">
+          </div>
+          <div class="field">
+            <label>Fund ABN <span class="req">*</span></label>
+            <input type="text" id="existFundABN" placeholder="XX XXX XXX XXX">
+          </div>
+          <div class="field">
+            <label>Unique Superannuation Identifier (USI)</label>
+            <input type="text" id="existUSI" placeholder="Fund's USI">
+          </div>
+          <div class="field">
+            <label>Member Account Number <span class="req">*</span></label>
+            <input type="text" id="existMemberNo" placeholder="Your member number">
+          </div>
+          <div class="field">
+            <label>Your Name on Account</label>
+            <input type="text" id="existNameOnAccount" placeholder="As shown on your super account">
+          </div>
+        </div>
+        <div class="warn-banner" style="margin-top:1rem; margin-bottom:0">
+          <strong>Required:</strong> You must also attach a letter of compliance from your super fund confirming it can accept contributions from your employer. Please email this to hr@propelbg.com.au with your name in the subject line.
+        </div>
+      </div>
+
+      <!-- Default fund -->
+      <div id="superSection-default" class="form-section hidden">
+        <div class="form-section-title">Employer Default Fund</div>
+        <div class="info-banner">Propel Wealth's nominated default super fund details will be provided to you separately by our payroll team (Sharon). By selecting this option, you authorise your employer to open a new super account in their default fund on your behalf.</div>
+      </div>
+
+      <!-- SMSF details -->
+      <div id="superSection-smsf" class="form-section hidden">
+        <div class="form-section-title">Self-Managed Super Fund (SMSF) Details</div>
+        <div class="form-grid">
+          <div class="field span-2">
+            <label>SMSF Name <span class="req">*</span></label>
+            <input type="text" id="smsfName" placeholder="Your SMSF name">
+          </div>
+          <div class="field">
+            <label>SMSF ABN <span class="req">*</span></label>
+            <input type="text" id="smsfABN" placeholder="XX XXX XXX XXX">
+          </div>
+          <div class="field">
+            <label>Electronic Service Address (ESA) <span class="req">*</span></label>
+            <input type="text" id="smsfESA" placeholder="Required for SuperStream payments">
+          </div>
+          <div class="field span-2">
+            <label>Your Full Name on SMSF Account <span class="req">*</span></label>
+            <input type="text" id="smsfNameOnAccount" placeholder="As shown on your SMSF account">
+          </div>
+        </div>
+        <div class="form-section-title" style="margin-top:1.25rem">SMSF Bank Account Details</div>
+        <div class="form-grid">
+          <div class="field span-2">
+            <label>Bank Account Name <span class="req">*</span></label>
+            <input type="text" id="smsfAccountName" placeholder="SMSF bank account name">
+          </div>
+          <div class="field">
+            <label>BSB <span class="req">*</span></label>
+            <input type="text" id="smsfBSB" placeholder="000-000" maxlength="7">
+          </div>
+          <div class="field">
+            <label>Account Number <span class="req">*</span></label>
+            <input type="text" id="smsfAccountNo" placeholder="">
+          </div>
+        </div>
+        <div class="warn-banner" style="margin-top:1rem; margin-bottom:0">
+          <strong>Required:</strong> You must attach evidence from the ATO confirming this is an ATO-regulated SMSF (from superfundlookup.gov.au). Please email this to hr@propelbg.com.au.
+        </div>
+      </div>
+
+      <div class="nav-wrap">
+        <button class="btn btn-secondary" onclick="prevStep(2)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="nextStep(2)">
+          Next: Bank Details
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ STEP 3: BANK ══════════════════════ -->
+  <div class="section-card hidden" id="step-3">
+    <div class="card-header">
+      <div class="section-label">Step 4 of 6</div>
+      <div class="section-title">Bank Account Details</div>
+      <div class="section-desc">Your salary will be paid into this account via Xero payroll.</div>
+    </div>
+    <div class="card-body">
+      <div class="info-banner">
+        Please ensure your account details are correct. Salary payments are processed via Xero. Contact Sharon (payroll) to update these details after your start date if needed.
+      </div>
+      <div class="form-grid">
+        <div class="field span-2">
+          <label>Account Name <span class="req">*</span></label>
+          <input type="text" id="bankAccountName" placeholder="Full name as it appears on your bank account" required>
+          <span class="err-msg">Please enter your account name</span>
+        </div>
+        <div class="field">
+          <label>Financial Institution / Bank Name <span class="req">*</span></label>
+          <input type="text" id="bankName" placeholder="e.g. Commonwealth Bank, ANZ, Westpac" required>
+          <span class="err-msg">Please enter your bank name</span>
+        </div>
+        <div class="field">
+          <label>Account Type</label>
+          <select id="accountType">
+            <option>Savings</option><option>Cheque / Transaction</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>BSB Number <span class="req">*</span></label>
+          <input type="text" id="bsb" placeholder="000-000" maxlength="7" required oninput="formatBSB(this)">
+          <div class="field-note">6-digit BSB including the hyphen</div>
+          <span class="err-msg">Please enter a valid 6-digit BSB</span>
+        </div>
+        <div class="field">
+          <label>Account Number <span class="req">*</span></label>
+          <input type="text" id="accountNumber" placeholder="" required>
+          <span class="err-msg">Please enter your account number</span>
+        </div>
+      </div>
+      <div class="warn-banner" style="margin-top:1.5rem; margin-bottom:0">
+        <strong>Security:</strong> Propel Wealth will never ask you to update bank details via email. If you receive such a request, contact GZ immediately.
+      </div>
+
+      <div class="nav-wrap">
+        <button class="btn btn-secondary" onclick="prevStep(3)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="nextStep(3)">
+          Next: Emergency Contact
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ STEP 4: EMERGENCY ══════════════════════ -->
+  <div class="section-card hidden" id="step-4">
+    <div class="card-header">
+      <div class="section-label">Step 5 of 6</div>
+      <div class="section-title">Emergency Contact</div>
+      <div class="section-desc">Someone we can contact in the event of an emergency at work.</div>
+    </div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>First Name <span class="req">*</span></label>
+          <input type="text" id="ecFirst" required>
+          <span class="err-msg">Required</span>
+        </div>
+        <div class="field">
+          <label>Last Name <span class="req">*</span></label>
+          <input type="text" id="ecLast" required>
+          <span class="err-msg">Required</span>
+        </div>
+        <div class="field">
+          <label>Relationship <span class="req">*</span></label>
+          <select id="ecRelationship" required>
+            <option value="">Select…</option>
+            <option>Spouse / Partner</option><option>Parent</option><option>Sibling</option>
+            <option>Child</option><option>Friend</option><option>Other</option>
+          </select>
+          <span class="err-msg">Please select relationship</span>
+        </div>
+        <div class="field">
+          <label>Phone Number <span class="req">*</span></label>
+          <input type="tel" id="ecPhone" placeholder="04XX XXX XXX" required>
+          <span class="err-msg">Required</span>
+        </div>
+        <div class="field">
+          <label>Alternative Phone <span class="hint">optional</span></label>
+          <input type="tel" id="ecPhoneAlt" placeholder="">
+        </div>
+        <div class="field">
+          <label>Email <span class="hint">optional</span></label>
+          <input type="email" id="ecEmail" placeholder="">
+        </div>
+        <div class="field span-2">
+          <label>Address <span class="hint">optional</span></label>
+          <input type="text" id="ecAddress" placeholder="Street, suburb, state, postcode">
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Additional Information</div>
+        <div class="field">
+          <label>Any medical conditions or allergies we should be aware of? <span class="hint">optional — for workplace safety</span></label>
+          <textarea id="medicalInfo" placeholder="e.g. Severe nut allergy, asthmatic, etc. Leave blank if none."></textarea>
+          <div class="field-note">This information is kept confidential and only used in emergencies.</div>
+        </div>
+      </div>
+
+      <div class="nav-wrap">
+        <button class="btn btn-secondary" onclick="prevStep(4)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="nextStep(4)">
+          Next: Declaration
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ STEP 5: DECLARATION ══════════════════════ -->
+  <div class="section-card hidden" id="step-5">
+    <div class="card-header">
+      <div class="section-label">Step 6 of 6</div>
+      <div class="section-title">Review & Declaration</div>
+      <div class="section-desc">Please review your details and sign your declaration before submitting.</div>
+    </div>
+    <div class="card-body">
+
+      <!-- Summary -->
+      <div class="form-section">
+        <div class="form-section-title">Summary of Your Details</div>
+        <div id="summaryBlock" style="display:grid; gap:0.75rem;">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Policy Acknowledgement</div>
+        <div class="warn-banner">Please read each item carefully before ticking. By ticking you confirm you have read and understood each document.</div>
+        <div class="check-group">
+          <label class="check-opt">
+            <input type="checkbox" id="ackOnboarding" required>
+            <span>I have read the <strong>New Employee Onboarding Pack (PW-OB-001)</strong> and understand my obligations as a new employee of Propel Wealth.</span>
+          </label>
+          <label class="check-opt">
+            <input type="checkbox" id="ackCyber" required>
+            <span>I have read the <strong>Cyber Security Guide (PW-CS-001)</strong> and agree to comply with all cyber security requirements, including the use of Keeper for password management and MFA on all systems.</span>
+          </label>
+          <label class="check-opt">
+            <input type="checkbox" id="ackOffice" required>
+            <span>I have read the <strong>Office Protocols (PW-OP-001)</strong> and understand the leave, WFH, and communication expectations.</span>
+          </label>
+          <label class="check-opt">
+            <input type="checkbox" id="ackDigital" required>
+            <span>I have read the <strong>Digital Systems Guide (PW-DS-001)</strong> and understand the filing, naming, and Xplan standards required.</span>
+          </label>
+          <label class="check-opt">
+            <input type="checkbox" id="ackPrivacy" required>
+            <span>I understand that client information is strictly confidential and must not be shared outside of authorised Propel Wealth systems, in accordance with the <strong>Privacy Act 1988 (Cth)</strong>.</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Statutory Declaration</div>
+        <div class="info-banner">
+          <strong>TFN Declaration (ATO NAT 3092):</strong> I declare that the information I have provided is true and correct. I understand that it is an offence to deliberately make a false or misleading statement.
+          <br><br>
+          <strong>Superannuation Standard Choice Form (ATO NAT 13080):</strong> I hereby declare that the information I have provided in relation to the nominated super fund is true and correct and I am authorised to provide the information requested.
+        </div>
+        <div class="form-grid">
+          <div class="field span-2">
+            <label>Full Legal Name (typed signature) <span class="req">*</span></label>
+            <input type="text" id="signatureName" placeholder="Type your full legal name to sign" required>
+            <div class="field-note">Typing your full name constitutes your digital signature for this declaration.</div>
+            <span class="err-msg">Please enter your full name to sign</span>
+          </div>
+          <div class="field">
+            <label>Date <span class="req">*</span></label>
+            <input type="date" id="signatureDate" required>
+            <span class="err-msg">Please select today's date</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-wrap">
+        <button class="btn btn-secondary" onclick="prevStep(5)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+        <button class="btn btn-success" onclick="submitForm()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          Submit Onboarding Form
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ COMPLETION ══════════════════════ -->
+  <div class="section-card hidden" id="step-complete">
+    <div class="card-body">
+      <div class="completion">
+        <div class="completion-icon">✓</div>
+        <h2>Onboarding Complete!</h2>
+        <p>Thank you <strong id="completeName"></strong>. Your onboarding information has been submitted successfully. The Propel Wealth team will review your details and be in touch before your start date.</p>
+
+        <div class="summary-table" id="completeSummary"></div>
+
+        <div>
+          <button class="btn btn-primary btn-print" onclick="window.print()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
+            Print / Save PDF
+          </button>
+        </div>
+        <p class="print-note">Use your browser's Print function and select "Save as PDF" to keep a copy for your records.</p>
+
+        <div style="margin-top:2rem; padding:1.25rem; background:var(--lgrey); border-radius:10px; text-align:left;">
+          <div style="font-size:0.78rem; font-weight:600; color:var(--teal); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.75rem;">Next Steps</div>
+          <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.83rem;">
+            <div>📧 Watch for a welcome email from GZ with your Day 1 logistics</div>
+            <div>💻 Metro West will contact you to set up your system access</div>
+            <div>📋 Bring certified ID (passport or driver's licence) on Day 1</div>
+            <div>🏦 If using an existing super fund, email your compliance letter to <strong>hr@propelbg.com.au</strong></div>
+            <div>❓ Questions? Contact <strong>admin@propelbg.com.au</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app-wrap -->
+
+<script>
+  let currentStep = 0;
+  const totalSteps = 6;
+
+  // ── Today's date as default for signature date ──
+  document.addEventListener('DOMContentLoaded', () => {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('signatureDate').value = today;
+  });
+
+  // ── Progress ──────────────────────────────────────────────────────────
+  function updateProgress(step) {
+    const pct = (step / totalSteps) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.querySelectorAll('.step-tab').forEach((tab, i) => {
+      tab.classList.remove('active','done');
+      if (i < step) tab.classList.add('done');
+      else if (i === step) tab.classList.add('active');
+    });
+  }
+
+  function showStep(step) {
+    for (let i = 0; i <= totalSteps; i++) {
+      const el = document.getElementById('step-' + (i < totalSteps ? i : 'complete'));
+      if (el) el.classList.add('hidden');
+    }
+    const target = step < totalSteps
+      ? document.getElementById('step-' + step)
+      : document.getElementById('step-complete');
+    if (target) {
+      target.classList.remove('hidden');
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    updateProgress(step);
+  }
+
+  function goToStep(step) {
+    if (step <= currentStep) {
+      currentStep = step;
+      showStep(currentStep);
+    }
+  }
+
+  // ── Validation ────────────────────────────────────────────────────────
+  function validateStep(step) {
+    let ok = true;
+    const required = document.querySelectorAll('#step-' + step + ' [required]');
+    required.forEach(el => {
+      el.classList.remove('error');
+      if (!el.value.trim()) {
+        el.classList.add('error');
+        ok = false;
+      }
+    });
+    // Email format
+    if (step === 0) {
+      const em = document.getElementById('email');
+      if (em.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)) {
+        em.classList.add('error'); ok = false;
+      }
+    }
+    // BSB format
+    if (step === 3) {
+      const bsb = document.getElementById('bsb');
+      if (bsb.value && !/^\d{3}-\d{3}$/.test(bsb.value)) {
+        bsb.classList.add('error'); ok = false;
+      }
+    }
+    // Declaration checkboxes
+    if (step === 5) {
+      const checks = ['ackOnboarding','ackCyber','ackOffice','ackDigital','ackPrivacy'];
+      checks.forEach(id => {
+        const cb = document.getElementById(id);
+        if (!cb.checked) { ok = false; cb.closest('.check-opt').style.borderColor = 'var(--red)'; }
+        else { cb.closest('.check-opt').style.borderColor = ''; }
+      });
+    }
+    if (!ok) {
+      const firstErr = document.querySelector('#step-' + step + ' .error');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return ok;
+  }
+
+  function nextStep(step) {
+    if (!validateStep(step)) return;
+    if (step === 5 - 1) buildSummary(); // before declaration
+    currentStep = step + 1;
+    showStep(currentStep);
+  }
+  function prevStep(step) {
+    currentStep = step - 1;
+    showStep(currentStep);
+  }
+
+  // ── TFN tab ──────────────────────────────────────────────────────────
+  function tfnTab(el, nextId, maxLen) {
+    el.value = el.value.replace(/\D/g,'');
+    if (el.value.length >= maxLen) {
+      const next = document.getElementById(nextId);
+      if (next) next.focus();
+    }
+  }
+
+  // ── BSB format ────────────────────────────────────────────────────────
+  function formatBSB(el) {
+    let v = el.value.replace(/\D/g,'');
+    if (v.length > 3) v = v.slice(0,3) + '-' + v.slice(3,6);
+    el.value = v;
+  }
+
+  // ── Super section toggle ──────────────────────────────────────────────
+  function showSuperSection(type) {
+    ['existing','default','smsf'].forEach(t => {
+      document.getElementById('superSection-' + t).classList.toggle('hidden', t !== type);
+    });
+  }
+
+  // ── Summary builder ───────────────────────────────────────────────────
+  function getV(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+  function getRadio(name) {
+    const r = document.querySelector(`input[name="${name}"]:checked`);
+    return r ? r.value : '';
+  }
+
+  function buildSummary() {
+    const tfn = [getV('tfn1'), getV('tfn2'), getV('tfn3')].filter(Boolean).join('-') || '(not provided)';
+    const superChoice = getRadio('superChoice') || '(not selected)';
+    const superLabel = { existing: 'My existing super fund', default: "Employer's default fund", smsf: 'Self-managed super fund (SMSF)' }[superChoice] || superChoice;
+
+    const rows = [
+      ['Full Name', [getV('title'), getV('firstName'), getV('middleName'), getV('lastName')].filter(Boolean).join(' ')],
+      ['Date of Birth', getV('dob')],
+      ['Email', getV('email')],
+      ['Phone', getV('phone')],
+      ['Home Address', [getV('street'), getV('suburb'), getV('state'), getV('postcode')].filter(Boolean).join(', ')],
+      ['Position', getV('position')],
+      ['Start Date', getV('startDate')],
+      ['Employment Type', getV('empType')],
+      ['TFN', tfn],
+      ['Tax-free Threshold', getRadio('tfThreshold') === 'yes' ? 'Claiming' : 'Not claiming'],
+      ['HELP/SSL/TSL Debt', getRadio('helpDebt') === 'yes' ? 'Yes' : 'No'],
+      ['Super Fund Choice', superLabel],
+      ['Bank Account Name', getV('bankAccountName')],
+      ['BSB', getV('bsb')],
+      ['Account Number', getV('accountNumber')],
+      ['Emergency Contact', [getV('ecFirst'), getV('ecLast')].filter(Boolean).join(' ') + (getV('ecRelationship') ? ` (${getV('ecRelationship')})` : '')],
+    ];
+
+    document.getElementById('summaryBlock').innerHTML = rows.map(([k, v]) => `
+      <div style="display:flex; justify-content:space-between; align-items:baseline; padding:0.45rem 0; border-bottom:1px solid var(--lgrey);">
+        <span style="font-size:0.78rem; color:var(--grey); min-width:160px;">${k}</span>
+        <span style="font-size:0.85rem; font-weight:500; color:var(--navy); text-align:right;">${v || '<em style="color:var(--grey);font-weight:300">Not provided</em>'}</span>
+      </div>
+    `).join('');
+
+    // complete page summary
+    document.getElementById('completeSummary').innerHTML = rows.slice(0,6).map(([k, v]) => `
+      <div class="summary-row">
+        <span class="sk">${k}</span>
+        <span class="sv">${v || '—'}</span>
+      </div>
+    `).join('');
+  }
+
+  // ── Submit ────────────────────────────────────────────────────────────
+  function submitForm() {
+    if (!validateStep(5)) return;
+    buildSummary();
+    const name = [getV('title'), getV('firstName'), getV('lastName')].filter(Boolean).join(' ');
+    document.getElementById('completeName').textContent = name || 'there';
+    currentStep = totalSteps;
+    showStep(currentStep);
+  }
+
+  // Init
+  updateProgress(0);
+</script>
+</body>
+</html>
